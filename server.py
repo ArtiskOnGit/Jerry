@@ -34,14 +34,51 @@ class Battlesnake(object):
         print("START")
         return "ok"
 
+
+
+
+
     @cherrypy.expose
     @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
     def move(self):
+# {
+#   "id": "totally-unique-snake-id",
+#   "name": "Sneky McSnek Face",
+#   "health": 54,
+#   "body": [
+#     {"x": 0, "y": 0},
+#     {"x": 1, "y": 0},
+#     {"x": 2, "y": 0}
+#   ],
+#   "latency": "123",
+#   "head": {"x": 0, "y": 0},
+#   "length": 3,
+#   "shout": "why are we shouting??",
+#   "squad": "1"
+# }
+
+
+
         # This function is called on every turn of a game. It's how your snake decides where to move.
         # Valid moves are "up", "down", "left", or "right".
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
+        head = data["you"]["head"] #{"x": 0, "y": 0}
+        possible_moves = ["up", "down", "left", "right"]
+
+        headminusone = data["you"]["body"][1]
+        if head["x"] == headminusone["x"] + 1:
+            possible_moves.remove("left")
+        if head["x"] == headminusone["x"] - 1:
+            possible_moves.remove("right")
+        if head["y"] == headminusone["y"] + 1:
+            possible_moves.remove("up")
+        if head["y"] == headminusone["y"] - 1:
+            possible_moves.remove("down")
+
+
+
 
         # Choose a random direction to move in
         possible_moves = ["up", "down", "left", "right"]
